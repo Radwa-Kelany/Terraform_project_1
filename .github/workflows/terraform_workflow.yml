@@ -1,0 +1,15 @@
+name: terraform workflow
+on:
+ push: 
+   branches:
+     - "main"
+jobs:
+   terraform_job:
+      name: terraform_apply
+      runs-on: ubuntu-latest
+      steps:
+       - name: checkout code 
+         uses: actions/checkout@v4
+       - name: bash command
+         run: echo "Hello From first test"
+         shell: bash 
