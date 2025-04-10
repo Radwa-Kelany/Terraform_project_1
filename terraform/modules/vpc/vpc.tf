@@ -63,7 +63,7 @@ resource "aws_route_table_association" "public_association" {
 }
 
 resource "aws_route_table_association" "private_association" {
-  for_each = tomap(aws_subnet.public_subnet)
+  for_each = tomap(aws_subnet.private_subnet)
   subnet_id      = each.value.id
   route_table_id = aws_route_table.private_rt.id
 }
@@ -75,6 +75,6 @@ resource "aws_route_table_association" "private_association" {
 output "private_subnets_id" {
   value = aws_subnet.private_subnet
 }
-# output "public_subnets_id" {
-#   value = aws_subnet.public_subnet[0]
-# }
+output "public_subnets_id" {
+  value = aws_subnet.public_subnet[0]
+}
