@@ -10,6 +10,34 @@ jobs:
       steps:
        - name: checkout code 
          uses: actions/checkout@v4
+
        - name: bash command
          run: echo "Hello From first test"
          shell: bash 
+
+       - name: AWS credentials
+         uses: aws-actions/configure-aws-credentials@v4
+         with: 
+            aws-region: us-east-1
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+       - name: Setup Terraform 
+         uses: hashicorp/setup-terraform@v3
+
+       - name: Terraform steps 
+         run: |
+           cd terraform/project
+           terraform init
+           terraform plan -out=tfplan
+           terraform apply --auto-approve
+
+       - name: Wait before running
+         run : sleep 300 
+       
+       - name: Destroy Terraform Resources 
+         run: |
+           cd terraform/project
+           terraform destroy --auto-approve 
+
+
