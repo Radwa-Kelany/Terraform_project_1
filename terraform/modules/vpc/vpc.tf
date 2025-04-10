@@ -6,7 +6,7 @@ resource "aws_vpc" "custom_vpc" {
   }
 }
 
-resource "aws_internet_gateway" "gw" {
+resource "aws_internet_gateway" "custom_gw" {
   vpc_id = aws_vpc.custom_vpc.id
 
   tags = {
@@ -16,7 +16,7 @@ resource "aws_internet_gateway" "gw" {
 
 resource "aws_subnet" "public_subnet" {
   vpc_id     = aws_vpc.custom_vpc.id
-  for_each = toset(var.public_cidrs)
+  for_each = tomap(var.public_cidrs)
   cidr_block = each.value
   
   tags = {
@@ -26,7 +26,7 @@ resource "aws_subnet" "public_subnet" {
 
 resource "aws_subnet" "private_subnet" {
   vpc_id     = aws_vpc.custom_vpc.id
-  for_each = toset(var.private_cidrs)
+  for_each = tomap(var.private_cidrs)
   cidr_block = each.value
   
   tags = {
